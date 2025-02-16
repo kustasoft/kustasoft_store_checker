@@ -13,9 +13,8 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
 
-/** KustasoftStoreCheckerPlugin is a android class to find the orign of installed apk */
+/** KustasoftStoreCheckerPlugin is a android class to find the origin of installed apk */
 public class KustasoftStoreCheckerPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
   // MethodChannel is used to provide communication between Flutter and native Android
   private MethodChannel channel;
@@ -34,12 +33,6 @@ public class KustasoftStoreCheckerPlugin implements FlutterPlugin, MethodCallHan
     this.applicationContext = null;
   }
 
-  @SuppressWarnings("deprecation")
-  public static void registerWith(Registrar registrar) {
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "kustasoft_store_checker");
-    channel.setMethodCallHandler(new KustasoftStoreCheckerPlugin());
-  }
-
   @Override
   public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
   }
@@ -56,7 +49,7 @@ public class KustasoftStoreCheckerPlugin implements FlutterPlugin, MethodCallHan
   public void onDetachedFromActivity() {
   }
 
-  //This function is used to get the installer package name of current application
+  // This function is used to get the installer package name of current application
   @TargetApi(Build.VERSION_CODES.ECLAIR)
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {

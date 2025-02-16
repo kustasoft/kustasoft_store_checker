@@ -25,6 +25,7 @@ android {
     namespace = "com.kustasoft.kustasoft_store_checker"
 
     compileSdk = 35
+    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

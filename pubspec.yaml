@@ -1,5 +1,6 @@
 name: kustasoft_store_checker
-description: "A new Flutter plugin project."
+# uzun 60-180 aras açıklama
+description: "A Flutter plugin to check the origin of the installed app, whether from App Store or TestFlight."
 version: 1.0.0
 homepage: https://github.com/kustasoft/kustasoft_store_checker.git
 repository: https://github.com/kustasoft/kustasoft_web_browser/tree/master
