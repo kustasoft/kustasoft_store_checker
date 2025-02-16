@@ -1,38 +1,71 @@
 package com.kustasoft.kustasoft_store_checker;
 
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.os.Build;
+
 import androidx.annotation.NonNull;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
+import io.flutter.plugin.common.PluginRegistry.Registrar;
 
-/** KustasoftStoreCheckerPlugin */
-public class KustasoftStoreCheckerPlugin implements FlutterPlugin, MethodCallHandler {
-  /// The MethodChannel that will the communication between Flutter and native Android
-  ///
-  /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-  /// when the Flutter Engine is detached from the Activity
+/** KustasoftStoreCheckerPlugin is a android class to find the orign of installed apk */
+public class KustasoftStoreCheckerPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
+  // MethodChannel is used to provide communication between Flutter and native Android
   private MethodChannel channel;
+  private Context applicationContext;
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
-    channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "kustasoft_store_checker");
+    this.applicationContext = flutterPluginBinding.getApplicationContext();
+    channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "kustasoft_store_checker");
     channel.setMethodCallHandler(this);
-  }
-
-  @Override
-  public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-    if (call.method.equals("getPlatformVersion")) {
-      result.success("Android " + android.os.Build.VERSION.RELEASE);
-    } else {
-      result.notImplemented();
-    }
   }
 
   @Override
   public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
     channel.setMethodCallHandler(null);
+    this.applicationContext = null;
+  }
+
+  @SuppressWarnings("deprecation")
+  public static void registerWith(Registrar registrar) {
+    final MethodChannel channel = new MethodChannel(registrar.messenger(), "kustasoft_store_checker");
+    channel.setMethodCallHandler(new KustasoftStoreCheckerPlugin());
+  }
+
+  @Override
+  public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
+  }
+
+  @Override
+  public void onDetachedFromActivityForConfigChanges() {
+  }
+
+  @Override
+  public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
+  }
+
+  @Override
+  public void onDetachedFromActivity() {
+  }
+
+  //This function is used to get the installer package name of current application
+  @TargetApi(Build.VERSION_CODES.ECLAIR)
+  @Override
+  public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
+    if (call.method.equals("getSource")) {
+      String packageName = applicationContext.getPackageName();
+      String installer = applicationContext.getPackageManager().getInstallerPackageName(packageName);
+      result.success(installer);
+    } else {
+      result.notImplemented();
+    }
   }
 }
