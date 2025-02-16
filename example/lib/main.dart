@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       //get origin of installed application
-      installationSource = await KustasoftStoreChecker.getSource;
+      installationSource = await KustaSoftStoreChecker.getSource;
     } on PlatformException {
       installationSource = Source.UNKNOWN;
     }

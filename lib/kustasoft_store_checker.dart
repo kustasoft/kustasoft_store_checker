@@ -25,7 +25,7 @@ enum Source {
 }
 
 /* Store Checker is useful to find the origin of installed apk/ipa */
-class KustasoftStoreChecker {
+class KustaSoftStoreChecker {
   static const MethodChannel _channel = MethodChannel(
     'kustasoft_store_checker',
   );
